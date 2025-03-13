@@ -7,9 +7,9 @@ steps:
   build_go_plugins:
     image: tinygo/tinygo:latest
     commands:
-      - pushd plugins/go_replace_words
+      - cd plugins/go_replace_words
       - tinygo build -o ../go_replace_words.wasm -target wasip1 -buildmode=c-shared main.go
-      - popd
+      - cd -
       - ls -lah plugins
 
   run_plugin_tests:
