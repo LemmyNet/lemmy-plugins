@@ -37,5 +37,5 @@ services:
     image: pgautoupgrade/pgautoupgrade:15-alpine
     environment:
       POSTGRES_DB: lemmy
-      POSTGRES_USER: postgres
+      POSTGRES_USER: lemmy
       POSTGRES_PASSWORD: password
