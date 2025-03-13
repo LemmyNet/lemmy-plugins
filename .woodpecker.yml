@@ -6,6 +6,9 @@ steps:
 
   build_go_plugins:
     image: tinygo/tinygo:latest
+    backend_options:
+      docker:
+        user: 0:0
     commands:
       - cd plugins/go_replace_words
       - ls -lah .
