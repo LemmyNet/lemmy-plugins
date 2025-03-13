@@ -1,0 +1,13 @@
+# ide config
+.idea
+.vscode
+
+# tests
+tests/node_modules
+tests/.yalc
+tests/yalc.lock
+tests/pict-rs
+tests/log
+
+# lemmy plugins
+*.wasm
