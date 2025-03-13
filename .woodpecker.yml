@@ -26,7 +26,7 @@ steps:
       # https://tinygo.org/getting-started/install/linux/#ubuntu-debian
       - wget https://github.com/tinygo-org/tinygo/releases/download/v0.36.0/tinygo_0.36.0_amd64.deb
       - dpkg -i tinygo_0.36.0_amd64.deb
-      - bash tests/prepare-drone-federation-test.sh
+      - bash tests/prepare.sh
       - cd tests/
       - pnpm i
       - pnpm test
