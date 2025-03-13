@@ -14,7 +14,7 @@ pushd ..
 popd
 
 pnpm i
-pnpm api-test || true
+pnpm test || true
 
 killall -s1 lemmy_server || true
 for INSTANCE in lemmy_alpha lemmy_beta; do
