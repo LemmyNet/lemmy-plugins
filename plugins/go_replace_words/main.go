@@ -12,9 +12,9 @@ type Metadata struct {
 	Description string `json:"description"`
 }
 
+// Returns info about the plugin which gets included in /api/v4/site
 //go:wasmexport metadata
 func metadata() int32 {
-	// Returns info about the plugin which is included in /api/v4/site
 	metadata := Metadata {
 		Name: "Test Plugin",
 		Url: "https://example.com",
@@ -28,8 +28,11 @@ func metadata() int32 {
 	return 0
 }
 
+// This hook gets called when a local user creates a new post
 //go:wasmexport create_local_post
 func create_local_post() int32 {
+	// Load user parameters into a map, to make sure we return all the same fields later
+	// and dont drop anything
 	params := make(map[string]interface{})
 	err := pdk.InputJSON(&params)
 	if err != nil {
@@ -56,5 +59,3 @@ func create_local_post() int32 {
 	}
 	return 0
 }
-
-func main() {}

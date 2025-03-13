@@ -8,6 +8,8 @@ steps:
     image: tinygo/tinygo:latest
     commands:
       - cd plugins/go_replace_words
+      - ls -lah .
+      - id
       - tinygo build -o ../go_replace_words.wasm -target wasip1 -buildmode=c-shared main.go
       - cd -
       - ls -lah plugins
