@@ -14,7 +14,7 @@ beforeAll(async () => {
 
 afterAll(unfollows);
 
-test("Plugin test", async () => {
+test("Go replace words", async () => {
   let community = await createCommunity(alpha);
   let postRes1 = await createPost(
     alpha,
