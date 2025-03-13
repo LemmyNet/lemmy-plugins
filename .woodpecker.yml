@@ -21,8 +21,8 @@ steps:
       DO_WRITE_HOSTS_FILE: "1"
     commands:
       - npm install -g corepack@latest && corepack enable pnpm
-      - apt-get update && apt-get install -y bash curl postgresql-client golang wget \
-        --no-install-recommends --no-install-suggests
+      - apt-get update && apt-get install -y --no-install-recommends --no-install-suggests \
+        bash curl postgresql-client golang wget
       # install tinygo to compile wasm plugins
       # https://tinygo.org/getting-started/install/linux/#ubuntu-debian
       - wget https://github.com/tinygo-org/tinygo/releases/download/v0.36.0/tinygo_0.36.0_amd64.deb
