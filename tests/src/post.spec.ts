@@ -11,17 +11,11 @@ test("Go replace words", async () => {
   let postRes1 = await createPost(
     alpha,
     community.community_view.community.id,
-    "https://example.com/",
     "Rust",
   );
-  expect(postRes1.post_view.post.body).toBe("Go");
+  expect(postRes1.post_view.post.name).toBe("Go");
 
   await expect(
-    createPost(
-      alpha,
-      community.community_view.community.id,
-      "https://example.com/",
-      "Java",
-    ),
+    createPost(alpha, community.community_view.community.id, "Java"),
   ).rejects.toStrictEqual(Error("plugin_error"));
 });

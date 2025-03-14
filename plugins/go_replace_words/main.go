@@ -40,17 +40,17 @@ func create_local_post() int32 {
 		return 1
 	}
 
-	// Dont allow any posts mentioning Java (these will throw an API error and not be written
-	// to the database)
-	body := params["body"].(string)
-	if strings.Contains(body, "Java") {
+	// Dont allow any posts mentioning Java in title
+	// (these will throw an API error and not be written to the database)
+	name := params["name"].(string)
+	if strings.Contains(name, "Java") {
 		// Throw error to reject post
 		pdk.SetError(errors.New("We dont talk about Java"))
 		return 1
 	}
 
-	// Replace all occurences of "Rust" in post body with "Go"
-	params["body"] = strings.Replace(body, "Rust", "Go", -1);
+	// Replace all occurences of "Rust" in post title with "Go"
+	params["name"] = strings.Replace(name, "Rust", "Go", -1);
 
 	err = pdk.OutputJSON(params)
 	if err != nil {

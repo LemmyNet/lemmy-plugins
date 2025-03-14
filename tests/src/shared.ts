@@ -69,8 +69,6 @@ export async function setupLogins() {
 export async function createPost(
   api: LemmyHttp,
   community_id: number,
-  url: string = "https://example.com/",
-  body = randomString(10),
   // use example.com for consistent title and embed description
   name: string = randomString(5),
   alt_text = randomString(10),
@@ -78,8 +76,6 @@ export async function createPost(
 ): Promise<PostResponse> {
   let form: CreatePost = {
     name,
-    url,
-    body,
     alt_text,
     community_id,
     custom_thumbnail,
