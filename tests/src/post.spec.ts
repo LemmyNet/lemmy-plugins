@@ -1,18 +1,10 @@
 jest.setTimeout(120000);
 
-import {
-  alpha,
-  setupLogins,
-  createPost,
-  unfollows,
-  createCommunity,
-} from "./shared";
+import { alpha, setupLogins, createPost, createCommunity } from "./shared";
 
 beforeAll(async () => {
   await setupLogins();
 });
-
-afterAll(unfollows);
 
 test("Go replace words", async () => {
   let community = await createCommunity(alpha);

@@ -32,7 +32,7 @@ mkdir -p $LOG_DIR
 echo "start alpha"
 LEMMY_CONFIG_LOCATION=./config/lemmy_alpha.hjson \
   LEMMY_DATABASE_URL="${LEMMY_DATABASE_URL}/lemmy_alpha" \
-  ./lemmy_server & #>$LOG_DIR/lemmy_alpha.out 2>&1 &
+  ./lemmy_server >$LOG_DIR/lemmy_alpha.out 2>&1 &
 
 echo "start beta"
 LEMMY_CONFIG_LOCATION=./config/lemmy_beta.hjson \
