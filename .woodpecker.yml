@@ -31,6 +31,17 @@ steps:
       - pnpm i
       - pnpm test
 
+  publish_plugins:
+    image: woodpeckerci/plugin-release
+    settings:
+      files:
+        - plugins/go_replace_words.wasm
+      title: ${CI_COMMIT_TAG##v}
+      api-key:
+        from_secret: github_token
+    when:
+      - event: tag
+
 services:
   database:
     # 15-alpine image necessary because of diesel tests

@@ -1,6 +1,6 @@
 # Lemmy Plugins
 
-This repository contains various example plugins for Lemmy. See the [Extism documentation](https://extism.org/docs/quickstart/plugin-quickstart) for details on how to write plugins. Lemmy-specific details and available hooks are [described in the RFC](https://github.com/LemmyNet/rfcs/pull/8/files). 
+This repository contains various example plugins for Lemmy. See the [Extism documentation](https://extism.org/docs/quickstart/plugin-quickstart) for details on how to write plugins. Lemmy-specific details and available hooks are [described in the RFC](https://github.com/LemmyNet/rfcs/pull/8/files).
 
 ## Contributing
 
