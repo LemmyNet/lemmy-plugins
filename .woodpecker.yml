@@ -15,7 +15,7 @@ steps:
       - cd plugins/go_replace_words
       - tinygo build -o ../go_replace_words.wasm -target wasip1 -buildmode=c-shared main.go
     when:
-      - event: [pull_request,tag]
+      - event: [pull_request, tag]
 
   build_typescript_plugin:
     image: node:23-alpine
@@ -24,7 +24,7 @@ steps:
       - cd plugins/typescript_push_webhook
       - npm run build
     when:
-      - event: [pull_request,tag]
+      - event: [pull_request, tag]
 
   run_plugin_tests:
     image: node:22-bookworm-slim
