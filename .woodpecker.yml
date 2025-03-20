@@ -12,9 +12,10 @@ steps:
       - wget --quiet https://github.com/extism/js-pdk/releases/download/v1.4.0/extism-js-x86_64-linux-v1.4.0.gz -O extism-js.gz
       - gzip -d extism-js.gz
       - chmod +x extism-js
-      - export PATH=$PATH:$(pwd)
+      - export "PATH=$PATH:$(pwd)"
       - echo $PATH
       - ls -lah
+      - ls -lah "$(pwd)/extism-js"
       - apk add --no-cache typescript
       - cd plugins/typescript_push_webhook
       - npm install
