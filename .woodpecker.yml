@@ -6,6 +6,20 @@ steps:
     when:
       - event: pull_request
 
+  build_typescript_plugin:
+    image: node:23-alpine
+    commands:
+      - wget --quiet https://github.com/extism/js-pdk/releases/download/v1.4.0/extism-js-x86_64-linux-v1.4.0.gz -O extism-js.gz
+      - gzip -d extism-js.gz
+      - ls -lah
+      - export PATH=$PATH:$(pwd)
+      - apk add --no-cache typescript
+      - cd plugins/typescript_push_webhook
+      - npm install
+      - npm run build
+    when:
+      - event: [pull_request, tag]
+
   build_go_plugin:
     image: tinygo/tinygo:latest
     backend_options:
@@ -14,20 +28,6 @@ steps:
     commands:
       - cd plugins/go_replace_words
       - tinygo build -o ../go_replace_words.wasm -target wasip1 -buildmode=c-shared main.go
-    when:
-      - event: [pull_request, tag]
-
-  build_typescript_plugin:
-    image: node:23-alpine
-    commands:
-      - wget --quiet https://github.com/extism/js-pdk/releases/download/v1.4.0/extism-js-x86_64-linux-v1.4.0.gz -O extism-js.gz
-      - gzip -d extism-js.gz
-      - ls -lah
-      - export PATH=$PATH:($pwd)
-      - apk add --no-cache typescript
-      - cd plugins/typescript_push_webhook
-      - npm install
-      - npm run build
     when:
       - event: [pull_request, tag]
 
