@@ -20,9 +20,10 @@ export function new_post() {
     // connection error as notification server is not running.
     return;
   }
+  const url = Config.get("notify_url");
   const request: HttpRequest = {
     method: "POST",
-    url: "http://127.0.0.1:8927",
+    url: url!,
   };
   const response = Http.request(request, params["ap_id"]);
   console.log(response);

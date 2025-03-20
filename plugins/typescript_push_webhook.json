@@ -4,5 +4,8 @@
       "path": "plugins/typescript_push_webhook.wasm"
     }
   ],
-  "allowed_hosts": ["127.0.0.1"]
+  "allowed_hosts": ["127.0.0.1"],
+  "config": {
+    "notify_url": "http://127.0.0.1:8927"
+  }
 }
