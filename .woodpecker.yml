@@ -20,6 +20,10 @@ steps:
   build_typescript_plugin:
     image: node:23-alpine
     commands:
+      - wget --quiet https://github.com/extism/js-pdk/releases/download/v1.4.0/extism-js-x86_64-linux-v1.4.0.gz -O extism-js.gz
+      - gzip -d extism-js.gz
+      - mv extism-js-x86_64-linux-v1.4.0 extism-js
+      - export PATH=$PATH:($pwd)
       - apk add --no-cache typescript
       - cd plugins/typescript_push_webhook
       - npm install
