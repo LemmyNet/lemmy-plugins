@@ -13,6 +13,8 @@ steps:
       - gzip -d extism-js.gz
       - chmod +x extism-js
       - export PATH=$PATH:$(pwd)
+      - echo $PATH
+      - ls -lah
       - apk add --no-cache typescript
       - cd plugins/typescript_push_webhook
       - npm install
