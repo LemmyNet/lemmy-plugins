@@ -23,7 +23,7 @@ pub fn metadata() -> FnResult<Json<Metadata>> {
 }
 
 #[plugin_fn]
-pub fn post_vote(
+pub fn before_post_vote(
     Json(vote): Json<HashMap<String, Value>>,
 ) -> FnResult<Json<HashMap<String, Value>>> {
     let lemmy_url = config::get("lemmy_url")?.unwrap();
