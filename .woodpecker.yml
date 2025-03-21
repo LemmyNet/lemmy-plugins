@@ -7,9 +7,10 @@ steps:
       - event: pull_request
 
   build_typescript_plugin:
+    # need to use ubuntu instead of debian because extism-js requires newer glibc version
     image: ubuntu
     commands:
-      - apt-get update && apt-get install -y --no-install-recommends --no-install-suggests node-typescript wget gzip ca-certificates npm
+      - apt-get update && apt-get install -y --no-install-recommends --no-install-suggests node-typescript wget gzip ca-certificates npm binaryen
       - wget https://github.com/extism/js-pdk/releases/download/v1.4.0/extism-js-x86_64-linux-v1.4.0.gz -O extism-js.gz
       - gzip -d extism-js.gz
       - chmod +x extism-js
