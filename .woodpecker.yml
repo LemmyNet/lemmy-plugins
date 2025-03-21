@@ -22,12 +22,12 @@ steps:
     image: ubuntu
     commands:
       - apt-get update && apt-get install -y --no-install-recommends --no-install-suggests node-typescript wget gzip ca-certificates npm
-      - wget --quiet https://github.com/extism/js-pdk/releases/download/v1.4.0/extism-js-x86_64-linux-v1.4.0.gz -O extism-js.gz
+      - wget --no-verbose https://github.com/extism/js-pdk/releases/download/v1.4.0/extism-js-x86_64-linux-v1.4.0.gz -O extism-js.gz
       - gzip -d extism-js.gz
       - chmod +x extism-js
       - mv extism-js /usr/local/bin/
       # for wasm-merge, version in ubuntu repo is too old
-      - wget --quiet https://github.com/WebAssembly/binaryen/releases/download/version_122/binaryen-version_122-x86_64-linux.tar.gz -O binaryen.tar.gz
+      - wget --no-verbose https://github.com/WebAssembly/binaryen/releases/download/version_122/binaryen-version_122-x86_64-linux.tar.gz -O binaryen.tar.gz
       - tar -xvzf binaryen.tar.gz
       - mv binaryen-version_122/bin/* /usr/local/bin/
       - cd plugins/typescript_push_webhook
