@@ -6,6 +6,26 @@ steps:
     when:
       - event: pull_request
 
+  build_typescript_plugin:
+    # need to use ubuntu instead of debian because extism-js requires newer glibc version
+    # https://github.com/extism/js-pdk/issues/129
+    image: ubuntu
+    commands:
+      - apt-get update && apt-get install -y --no-install-recommends --no-install-suggests node-typescript curl ca-certificates npm
+      - curl https://github.com/extism/js-pdk/releases/download/v1.4.0/extism-js-x86_64-linux-v1.4.0.gz -L -o extism-js.gz
+      - gzip -d extism-js.gz
+      - chmod +x extism-js
+      - mv extism-js /usr/local/bin/
+      # for wasm-merge, version in ubuntu repo is too old
+      - curl https://github.com/WebAssembly/binaryen/releases/download/version_122/binaryen-version_122-x86_64-linux.tar.gz -L -o binaryen.tar.gz
+      - tar -xvzf binaryen.tar.gz
+      - mv binaryen-version_122/bin/* /usr/local/bin/
+      - cd plugins/typescript_push_webhook
+      - npm install
+      - npm run build
+    when:
+      - event: [pull_request, tag]
+
   build_rust_plugin:
     image: rust:1.81
     commands:
@@ -13,26 +33,6 @@ steps:
       - cd plugins/rust_allowed_voters
       - cargo build
       - cp target/wasm32-unknown-unknown/debug/rust_allowed_voters.wasm ..
-    when:
-      - event: [pull_request, tag]
-
-  build_typescript_plugin:
-    # need to use ubuntu instead of debian because extism-js requires newer glibc version
-    # https://github.com/extism/js-pdk/issues/129
-    image: ubuntu
-    commands:
-      - apt-get update && apt-get install -y --no-install-recommends --no-install-suggests node-typescript wget gzip ca-certificates npm
-      - wget --quiet https://github.com/extism/js-pdk/releases/download/v1.4.0/extism-js-x86_64-linux-v1.4.0.gz -O extism-js.gz
-      - gzip -d extism-js.gz
-      - chmod +x extism-js
-      - mv extism-js /usr/local/bin/
-      # for wasm-merge, version in ubuntu repo is too old
-      - wget --quiet https://github.com/WebAssembly/binaryen/releases/download/version_122/binaryen-version_122-x86_64-linux.tar.gz -O binaryen.tar.gz
-      - tar -xvzf binaryen.tar.gz
-      - mv binaryen-version_122/bin/* /usr/local/bin/
-      - cd plugins/typescript_push_webhook
-      - npm install
-      - npm run build
     when:
       - event: [pull_request, tag]
 
@@ -54,11 +54,11 @@ steps:
       DO_WRITE_HOSTS_FILE: "1"
     commands:
       - npm install -g corepack@latest && corepack enable pnpm
-      - apt-get update && apt-get install -y --no-install-recommends --no-install-suggests bash curl postgresql-client golang wget ca-certificates
+      - apt-get update && apt-get install -y --no-install-recommends --no-install-suggests bash curl postgresql-client golang curl ca-certificates
       # install tinygo to compile wasm plugins
       # https://tinygo.org/getting-started/install/linux/#ubuntu-debian
-      - wget -q https://github.com/tinygo-org/tinygo/releases/download/v0.36.0/tinygo_0.36.0_amd64.deb
-      - dpkg -i tinygo_0.36.0_amd64.deb
+      - curl https://github.com/tinygo-org/tinygo/releases/download/v0.36.0/tinygo_0.36.0_amd64.deb -L -o tinygo.deb
+      - dpkg -i tinygo.deb
       - bash tests/prepare.sh
       - cd tests/
       - pnpm i
