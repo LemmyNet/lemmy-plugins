@@ -19,6 +19,7 @@ steps:
       - apk add --no-cache typescript
       - cd plugins/typescript_push_webhook
       - npm install
+      - extism-js --help
       - npm run build
     when:
       - event: [pull_request, tag]
