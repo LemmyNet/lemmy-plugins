@@ -7,9 +7,9 @@ steps:
       - event: pull_request
 
   build_typescript_plugin:
-    image: node:22-bookworm-slim
+    image: ubuntu
     commands:
-      - apt-get update && apt-get install -y --no-install-recommends --no-install-suggests node-typescript wget gzip ca-certificates
+      - apt-get update && apt-get install -y --no-install-recommends --no-install-suggests node-typescript wget gzip ca-certificates nodejs
       - wget https://github.com/extism/js-pdk/releases/download/v1.4.0/extism-js-x86_64-linux-v1.4.0.gz -O extism-js.gz
       - gzip -d extism-js.gz
       - chmod +x extism-js
