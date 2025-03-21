@@ -8,17 +8,21 @@ steps:
 
   build_typescript_plugin:
     # need to use ubuntu instead of debian because extism-js requires newer glibc version
+    # https://github.com/extism/js-pdk/issues/129
     image: ubuntu
     commands:
-      - apt-get update && apt-get install -y --no-install-recommends --no-install-suggests node-typescript wget gzip ca-certificates npm binaryen
-      - wget https://github.com/extism/js-pdk/releases/download/v1.4.0/extism-js-x86_64-linux-v1.4.0.gz -O extism-js.gz
+      - apt-get update && apt-get install -y --no-install-recommends --no-install-suggests node-typescript wget gzip ca-certificates npm
+      - wget --quiet https://github.com/extism/js-pdk/releases/download/v1.4.0/extism-js-x86_64-linux-v1.4.0.gz -O extism-js.gz
       - gzip -d extism-js.gz
       - chmod +x extism-js
       - mv extism-js /usr/local/bin/
-      - ls -la /usr/local/bin/extism-js
+      # for wasm-merge, version in ubuntu repo is too old
+      - wget --quiet https://github.com/WebAssembly/binaryen/releases/download/version_122/binaryen-version_122-x86_64-linux.tar.gz -O binaryen.tar.gz
+      - tar -xvzf binaryen.tar.gz
+      - ls -lah
+      - mv bin/* /usr/local/bin/
       - cd plugins/typescript_push_webhook
       - npm install
-      - extism-js --help
       - npm run build
     when:
       - event: [pull_request, tag]
