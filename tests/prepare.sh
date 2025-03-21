@@ -4,6 +4,7 @@
 set -e
 
 export LEMMY_TEST_FAST_FEDERATION=1 # by default, the persistent federation queue has delays in the scale of 30s-5min
+export RUST_LOG=extism=info,lemmy_api_common=info,error
 
 for INSTANCE in lemmy_alpha lemmy_beta; do
   echo "DB URL: ${LEMMY_DATABASE_URL} INSTANCE: $INSTANCE"

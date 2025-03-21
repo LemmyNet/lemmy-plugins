@@ -6,6 +6,16 @@ steps:
     when:
       - event: pull_request
 
+  build_rust_plugin:
+    image: rust:1.81
+    commands:
+      - rustup target add wasm32-unknown-unknown
+      - cd plugins/rust_allowed_voters
+      - cargo build
+      - cp target/wasm32-unknown-unknown/debug/rust_allowed_voters.wasm ..
+    when:
+      - event: [pull_request, tag]
+
   build_typescript_plugin:
     # need to use ubuntu instead of debian because extism-js requires newer glibc version
     # https://github.com/extism/js-pdk/issues/129
@@ -60,6 +70,7 @@ steps:
     image: woodpeckerci/plugin-release
     settings:
       files:
+        - plugins/rust_allowed_voters.wasm
         - plugins/go_replace_words.wasm
         - plugins/typescript_push_webhook.wasm
       title: ${CI_COMMIT_TAG##v}

@@ -10,7 +10,7 @@
   "scripts": {
     "lint": "tsc --noEmit && eslint --report-unused-disable-directives && prettier --check 'src/**/*.ts'",
     "fix": "prettier --write src && eslint --fix src",
-    "test": "jest -i typescript.spec.ts && jest -i golang.spec.ts"
+    "test": "jest -i rust.spec.ts && jest -i golang.spec.ts && jest -i typescript.spec.ts"
   },
   "devDependencies": {
     "@types/jest": "^29.5.12",
