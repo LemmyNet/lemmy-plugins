@@ -6,16 +6,6 @@ steps:
     when:
       - event: pull_request
 
-  build_rust_plugin:
-    image: rust:1.81
-    commands:
-      - rustup target add wasm32-unknown-unknown
-      - cd plugins/rust_allowed_voters
-      - cargo build
-      - cp target/wasm32-unknown-unknown/debug/rust_allowed_voters.wasm ..
-    when:
-      - event: [pull_request, tag]
-
   build_typescript_plugin:
     # need to use ubuntu instead of debian because extism-js requires newer glibc version
     # https://github.com/extism/js-pdk/issues/129
@@ -33,6 +23,16 @@ steps:
       - cd plugins/typescript_push_webhook
       - npm install
       - npm run build
+    when:
+      - event: [pull_request, tag]
+
+  build_rust_plugin:
+    image: rust:1.81
+    commands:
+      - rustup target add wasm32-unknown-unknown
+      - cd plugins/rust_allowed_voters
+      - cargo build
+      - cp target/wasm32-unknown-unknown/debug/rust_allowed_voters.wasm ..
     when:
       - event: [pull_request, tag]
 
