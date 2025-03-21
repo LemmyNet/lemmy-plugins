@@ -3,7 +3,8 @@
 .vscode
 
 # tests
-tests/node_modules
+**/node_modules
+plugins/typescript_push_webhook/dist
 tests/.yalc
 tests/yalc.lock
 tests/pict-rs
@@ -11,3 +12,4 @@ tests/log
 
 # lemmy plugins
 *.wasm
+
