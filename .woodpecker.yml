@@ -7,7 +7,7 @@ steps:
       - event: pull_request
 
   build_typescript_plugin:
-    image: node:23-alpine
+    image: node:23
     commands:
       - apk add --no-cache typescript
       - wget --quiet https://github.com/extism/js-pdk/releases/download/v1.4.0/extism-js-x86_64-linux-v1.4.0.gz -O extism-js.gz
