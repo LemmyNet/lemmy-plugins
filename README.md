@@ -31,7 +31,9 @@ npm run build
 
 ## Rust: Allowed Voters
 
-Listens to `new_vote` hook
+Listens to `new_vote` hook, then calls `/api/v4/person` to get details about the voter. It only allows downvotes if the user has made at least 5 posts before. See [rust-pdk readme](https://github.com/extism/rust-pdk?tab=readme-ov-file) for setup and detailed documentation.
+
+Use the following steps to compile it:
 
 ```bash
 apt install cargo
