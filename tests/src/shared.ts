@@ -1,4 +1,4 @@
-import { LemmyHttp } from "lemmy-js-client";
+import { LemmyHttp, Register } from "lemmy-js-client";
 import { CreatePost } from "lemmy-js-client/dist/types/CreatePost";
 import { EditSite } from "lemmy-js-client/dist/types/EditSite";
 import { Login } from "lemmy-js-client/dist/types/Login";
@@ -137,6 +137,26 @@ export async function loginUser(
     password: password,
   };
   return api.login(form);
+}
+
+export async function registerUser(
+  api: LemmyHttp,
+  url: string,
+  username: string = randomString(5),
+): Promise<LemmyHttp> {
+  let form: Register = {
+    username,
+    password,
+    password_verify: password,
+    show_nsfw: true,
+  };
+  let login_response = await api.register(form);
+
+  expect(login_response.jwt).toBeDefined();
+  let lemmy_http = new LemmyHttp(url, {
+    headers: { Authorization: `Bearer ${login_response.jwt ?? ""}` },
+  });
+  return lemmy_http;
 }
 
 export function delay(millis = 500) {

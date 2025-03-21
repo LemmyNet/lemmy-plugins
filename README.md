@@ -31,7 +31,7 @@ npm run build
 
 ## Rust: Allowed Voters
 
-
+Listens to `new_vote` hook 
 ```bash
 apt install cargo
 cd plugins/rust_allowed_voters
