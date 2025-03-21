@@ -8,7 +8,7 @@ steps:
 
   build_rust_plugin:
     image: rust:1.81
-    commands
+    commands:
       - rustup target add wasm32-unknown-unknown
       - cd plugins/rust_allowed_voters
       - cargo build
