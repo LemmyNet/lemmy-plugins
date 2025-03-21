@@ -29,6 +29,15 @@ npm install
 npm run build
 ```
 
+## Rust: Allowed Voters
+
+
+```bash
+apt install cargo
+cd plugins/rust_allowed_voters
+cargo build
+cp target/wasm32-unknown-unknown/debug/rust_allowed_voters.wasm ..
+```
 ## Tests
 
-This repository contains test cases for the plugins. To run them install `pnpm` and `postgresql`, with a database `postgres://lemmy:password@localhost:5432/lemmy`. Then go into `tests` folder and execute `./run.sh`.
+This repository contains test cases for the plugins. To run them install `pnpm` and `postgresql`, with a database `postgres://lemmy:password@localhost:5432/lemmy`. Then compile all the plugins as described above, go into `tests` folder and execute `./run.sh`.

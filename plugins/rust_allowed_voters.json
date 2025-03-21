@@ -1,0 +1,7 @@
+{
+  "wasm": [
+    {
+      "path": "plugins/rust_allowed_voters.wasm"
+    }
+  ]
+}

@@ -3,12 +3,17 @@
 .vscode
 
 # tests
-**/node_modules
-plugins/typescript_push_webhook/dist
+node_modules
 tests/.yalc
 tests/yalc.lock
 tests/pict-rs
 tests/log
+
+# plugins
+plugins/rust_allowed_voters/target
+plugins/rust_allowed_voters/Cargo.lock
+plugins/typescript_push_webhook/dist
+plugins/typescript_push_webhook/node_modules
 
 # lemmy plugins
 *.wasm
