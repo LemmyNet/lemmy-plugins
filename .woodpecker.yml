@@ -19,7 +19,6 @@ steps:
       # for wasm-merge, version in ubuntu repo is too old
       - wget --quiet https://github.com/WebAssembly/binaryen/releases/download/version_122/binaryen-version_122-x86_64-linux.tar.gz -O binaryen.tar.gz
       - tar -xvzf binaryen.tar.gz
-      - ls -lah
       - mv binaryen-version_122/bin/* /usr/local/bin/
       - cd plugins/typescript_push_webhook
       - npm install
