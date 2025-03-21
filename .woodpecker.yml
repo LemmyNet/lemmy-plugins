@@ -13,6 +13,8 @@ steps:
       - cd plugins/rust_allowed_voters
       - cargo build
       - cp target/wasm32-unknown-unknown/debug/rust_allowed_voters.wasm ..
+    when:
+      - event: [pull_request, tag]
 
   build_typescript_plugin:
     # need to use ubuntu instead of debian because extism-js requires newer glibc version
