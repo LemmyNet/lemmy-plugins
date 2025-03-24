@@ -13,7 +13,7 @@ export function metadata() {
   Host.outputString(JSON.stringify(metadata));
 }
 
-export function new_post() {
+export function after_create_local_post() {
   const params = JSON.parse(Host.inputString());
   if (params["name"] != "Notification") {
     // Ignore posts with a different title, otherwise unrelated tests will throw

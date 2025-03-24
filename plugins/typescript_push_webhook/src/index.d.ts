@@ -1,4 +1,4 @@
 declare module "main" {
   export function metadata();
-  export function new_post();
+  export function after_create_local_post();
 }
