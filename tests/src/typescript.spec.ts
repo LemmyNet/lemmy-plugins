@@ -1,11 +1,14 @@
 jest.setTimeout(120000);
 
+import { NotificationView, PrivateMessageView } from "lemmy-js-client";
 import {
   alpha,
   setupLogins,
-  createPost,
-  createCommunity,
   delay,
+  isPluginActive,
+  registerUser,
+  alphaUrl,
+  createPrivateMessage,
 } from "./shared";
 import { createServer, IncomingMessage, ServerResponse } from "http";
 
@@ -14,7 +17,8 @@ beforeAll(async () => {
 });
 
 test("Typescript push webhook", async () => {
-  var notificationReceived = false;
+  await isPluginActive(alpha, "Push Webhook");
+  var notif: string | null = null;
   let server = createServer(function (
     req: IncomingMessage,
     res: ServerResponse,
@@ -25,27 +29,39 @@ test("Typescript push webhook", async () => {
         body += chunk;
       })
       .on("end", () => {
-        console.log("New post with url: " + body);
-        notificationReceived = true;
+        notif = body;
         res.writeHead(200);
         res.end();
       });
   });
   server.listen(8927);
 
-  let community = await createCommunity(alpha);
-  let postRes1 = await createPost(
-    alpha,
-    community.community_view.community.id,
-    "Notification",
+  // create private message which sends in notification to recipient
+  let alphaProfile = await alpha.getMyUser();
+  let otherUser = await registerUser(alpha, alphaUrl);
+  let privateMessage = await createPrivateMessage(
+    otherUser,
+    alphaProfile.local_user_view.person.id,
   );
-  expect(postRes1.post_view.post.name).toBeDefined();
+  expect(
+    privateMessage.private_message_view.private_message.content,
+  ).toBeDefined();
 
-  while (!notificationReceived) {
-    console.log(notificationReceived);
+  // wait until notification webhook is received
+  while (notif === null) {
     await delay();
   }
-  expect(notificationReceived).toBeTruthy();
+
+  // parse webhook result and compare
+  let notif_parsed: NotificationView = JSON.parse(notif);
+  expect(notif_parsed.notification.kind).toBe("private_message");
+  expect(notif_parsed.data.type_).toBe("private_message");
+  const pm = notif_parsed.data as PrivateMessageView;
+  expect(pm.creator).toEqual(privateMessage.private_message_view.creator);
+  expect(pm.recipient).toEqual(privateMessage.private_message_view.recipient);
+  expect(pm.private_message).toEqual(
+    privateMessage.private_message_view.private_message,
+  );
 
   server.close();
 });

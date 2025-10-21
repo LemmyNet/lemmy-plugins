@@ -16,7 +16,7 @@ type Metadata struct {
 //go:wasmexport metadata
 func metadata() int32 {
 	metadata := Metadata {
-		Name: "Test Plugin",
+		Name: "Replace Words",
 		Url: "https://example.com",
 		Description: "Plugin to test Lemmy feature",
 	}

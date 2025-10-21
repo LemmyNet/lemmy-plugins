@@ -27,7 +27,7 @@ steps:
       - event: [pull_request, tag]
 
   build_rust_plugin:
-    image: rust:1.81
+    image: rust:1.90
     commands:
       - rustup target add wasm32-unknown-unknown
       - cd plugins/rust_allowed_voters

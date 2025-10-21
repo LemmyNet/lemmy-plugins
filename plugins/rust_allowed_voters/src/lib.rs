@@ -16,7 +16,7 @@ struct Metadata {
 #[plugin_fn]
 pub fn metadata() -> FnResult<Json<Metadata>> {
     Ok(Json(Metadata {
-        name: "Test Plugin".to_string(),
+        name: "Allowed Voters".to_string(),
         url: "https://example.com".to_string(),
         description: "Plugin to test Lemmy feature".to_string(),
     }))
@@ -35,8 +35,8 @@ pub fn before_post_vote(
     };
     let res: GetPersonDetailsResponse = http::request::<()>(&req, None)?.json()?;
     let person_post_count = res.person_view.person.post_count;
-    let vote_score = vote.get("like_score").and_then(Value::as_i64).unwrap();
-    if person_post_count < 5 && vote_score == -1 {
+    let is_upvote = vote.get("is_upvote").and_then(Value::as_bool).unwrap();
+    if person_post_count < 5 && !is_upvote {
         return Err(Error::msg("user is not allowed to downvote").into());
     }
     Ok(Json(vote))

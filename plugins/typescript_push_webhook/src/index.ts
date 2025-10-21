@@ -6,25 +6,20 @@ export interface Metadata {
 
 export function metadata() {
   let metadata: Metadata = {
-    name: "Test Plugin",
+    name: "Push Webhook",
     url: "https://example.com",
     description: "Plugin to test Lemmy feature",
   };
   Host.outputString(JSON.stringify(metadata));
 }
 
-export function after_create_local_post() {
-  const params = JSON.parse(Host.inputString());
-  if (params["name"] != "Notification") {
-    // Ignore posts with a different title, otherwise unrelated tests will throw
-    // connection error as notification server is not running.
-    return;
-  }
+export function notification_after_create() {
   const url = Config.get("notify_url");
   const request: HttpRequest = {
     method: "POST",
     url: url!,
   };
-  const response = Http.request(request, params["ap_id"]);
+  const params = Host.inputString();
+  const response = Http.request(request, params);
   console.log(response);
 }

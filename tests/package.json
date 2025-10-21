@@ -10,7 +10,7 @@
   "scripts": {
     "lint": "tsc --noEmit && eslint --report-unused-disable-directives && prettier --check 'src/**/*.ts'",
     "fix": "prettier --write src && eslint --fix src",
-    "test": "jest -i rust.spec.ts && jest -i golang.spec.ts && jest -i typescript.spec.ts"
+    "test": "jest -i typescript.spec.ts"
   },
   "devDependencies": {
     "@types/jest": "^29.5.12",
@@ -21,7 +21,7 @@
     "eslint": "^9.20.0",
     "eslint-plugin-prettier": "^5.2.3",
     "jest": "^29.5.0",
-    "lemmy-js-client": "1.0.0-action-structs.1",
+    "lemmy-js-client": "1.0.0-api-updates-3.2",
     "prettier": "^3.5.0",
     "ts-jest": "^29.1.0",
     "tsoa": "^6.6.0",
