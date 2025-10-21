@@ -41,6 +41,8 @@ LEMMY_CONFIG_LOCATION=./config/lemmy_beta.hjson \
   ./lemmy_server >$LOG_DIR/lemmy_beta.out 2>&1 &
 
 echo "wait for all instances to start"
+cat $LOG_DIR/lemmy_alpha.out
+cat $LOG_DIR/lemmy_beta.out
 while [[ "$(curl -s -o /dev/null -w '%{http_code}' 'lemmy-alpha:8541/api/v4/site')" != "200" ]]; do sleep 1; done
 echo "alpha started"
 while [[ "$(curl -s -o /dev/null -w '%{http_code}' 'lemmy-beta:8551/api/v4/site')" != "200" ]]; do sleep 1; done
