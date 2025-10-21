@@ -24,5 +24,5 @@ test("Go replace words", async () => {
 
   await expect(
     createPost(alpha, community.community_view.community.id, "Java"),
-  ).rejects.toStrictEqual(Error("plugin_error"));
+  ).rejects.toThrow("We dont talk about Java");
 });

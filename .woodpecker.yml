@@ -62,6 +62,16 @@ steps:
     when:
       - event: pull_request
 
+  test_server_output:
+    image: alpine:3
+    commands:
+      # `|| true` prevents this step from appearing to fail if the server output files don't exist
+      - cat tests/log/* || true
+      - "# If you can't see all output, then use the download button"
+    when:
+      - event: pull_request
+        status: failure
+
   publish_plugins:
     image: woodpeckerci/plugin-release
     settings:

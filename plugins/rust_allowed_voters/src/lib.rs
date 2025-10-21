@@ -23,7 +23,7 @@ pub fn metadata() -> FnResult<Json<Metadata>> {
 }
 
 #[plugin_fn]
-pub fn before_post_vote(
+pub fn post_before_vote(
     Json(vote): Json<HashMap<String, Value>>,
 ) -> FnResult<Json<HashMap<String, Value>>> {
     let lemmy_url = config::get("lemmy_url")?.unwrap();
@@ -35,7 +35,8 @@ pub fn before_post_vote(
     };
     let res: GetPersonDetailsResponse = http::request::<()>(&req, None)?.json()?;
     let person_post_count = res.person_view.person.post_count;
-    let is_upvote = vote.get("is_upvote").and_then(Value::as_bool).unwrap();
+    info!("{:?}", vote);
+    let is_upvote = vote.get("vote_is_upvote").and_then(Value::as_bool).unwrap();
     if person_post_count < 5 && !is_upvote {
         return Err(Error::msg("user is not allowed to downvote").into());
     }
