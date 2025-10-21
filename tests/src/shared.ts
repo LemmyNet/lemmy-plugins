@@ -1,4 +1,10 @@
-import { LemmyHttp, Register } from "lemmy-js-client";
+import {
+  CreatePrivateMessage,
+  LemmyHttp,
+  PersonId,
+  PrivateMessageResponse,
+  Register,
+} from "lemmy-js-client";
 import { CreatePost } from "lemmy-js-client/dist/types/CreatePost";
 import { EditSite } from "lemmy-js-client/dist/types/EditSite";
 import { Login } from "lemmy-js-client/dist/types/Login";
@@ -40,13 +46,13 @@ export async function setupLogins() {
 
   // Registration applications are now enabled by default, need to disable them
   let editSiteForm: EditSite = {
-    registration_mode: "Open",
-    rate_limit_message: 999,
-    rate_limit_post: 999,
-    rate_limit_register: 999,
-    rate_limit_image: 999,
-    rate_limit_comment: 999,
-    rate_limit_search: 999,
+    registration_mode: "open",
+    rate_limit_message_max_requests: 999,
+    rate_limit_post_max_requests: 999,
+    rate_limit_register_max_requests: 999,
+    rate_limit_image_max_requests: 999,
+    rate_limit_comment_max_requests: 999,
+    rate_limit_search_max_requests: 999,
   };
   await alpha.editSite(editSiteForm);
   await beta.editSite(editSiteForm);
@@ -83,6 +89,17 @@ export async function createPost(
   return api.createPost(form);
 }
 
+export async function createPrivateMessage(
+  api: LemmyHttp,
+  recipient_id: PersonId,
+): Promise<PrivateMessageResponse> {
+  let form: CreatePrivateMessage = {
+    recipient_id,
+    content: randomString(5),
+  };
+  return api.createPrivateMessage(form);
+}
+
 export async function followCommunity(
   api: LemmyHttp,
   follow: boolean,
@@ -97,7 +114,7 @@ export async function followCommunity(
     () => getCommunity(api, res.community_view.community.id),
     g => {
       let followState = g.community_view.community_actions?.follow_state;
-      return follow ? followState === "Accepted" : followState === undefined;
+      return follow ? followState === "accepted" : followState === undefined;
     },
   );
   // wait FOLLOW_ADDITIONS_RECHECK_DELAY (there's no API to wait for this currently)
@@ -197,4 +214,11 @@ export async function waitUntil<T>(
   throw Error(
     `Failed "${fetcher}": "${checker}" did not return true after ${retries} retries (delayed ${delaySeconds}s each)`,
   );
+}
+
+export async function isPluginActive(api: LemmyHttp, name: string) {
+  let site = await api.getSite();
+  if (!site.active_plugins.find(a => a.name == name)) {
+    throw Error("Plugin {name} is not active");
+  }
 }

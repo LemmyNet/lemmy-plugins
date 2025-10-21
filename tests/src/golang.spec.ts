@@ -1,12 +1,19 @@
 jest.setTimeout(120000);
 
-import { alpha, setupLogins, createPost, createCommunity } from "./shared";
+import {
+  alpha,
+  setupLogins,
+  createPost,
+  createCommunity,
+  isPluginActive,
+} from "./shared";
 
 beforeAll(async () => {
   await setupLogins();
 });
 
 test("Go replace words", async () => {
+  await isPluginActive(alpha, "Replace Words");
   let community = await createCommunity(alpha);
   let postRes1 = await createPost(
     alpha,
@@ -17,5 +24,5 @@ test("Go replace words", async () => {
 
   await expect(
     createPost(alpha, community.community_view.community.id, "Java"),
-  ).rejects.toStrictEqual(Error("plugin_error"));
+  ).rejects.toThrow("We dont talk about Java");
 });

@@ -27,7 +27,7 @@ steps:
       - event: [pull_request, tag]
 
   build_rust_plugin:
-    image: rust:1.81
+    image: rust:1.90
     commands:
       - rustup target add wasm32-unknown-unknown
       - cd plugins/rust_allowed_voters
@@ -54,17 +54,23 @@ steps:
       DO_WRITE_HOSTS_FILE: "1"
     commands:
       - npm install -g corepack@latest && corepack enable pnpm
-      - apt-get update && apt-get install -y --no-install-recommends --no-install-suggests bash curl postgresql-client golang curl ca-certificates
-      # install tinygo to compile wasm plugins
-      # https://tinygo.org/getting-started/install/linux/#ubuntu-debian
-      - curl https://github.com/tinygo-org/tinygo/releases/download/v0.36.0/tinygo_0.36.0_amd64.deb -L -o tinygo.deb
-      - dpkg -i tinygo.deb
+      - apt-get update && apt-get install -y --no-install-recommends --no-install-suggests bash curl postgresql-client ca-certificates
       - bash tests/prepare.sh
       - cd tests/
       - pnpm i
       - pnpm test
     when:
       - event: pull_request
+
+  test_server_output:
+    image: alpine:3
+    commands:
+      # `|| true` prevents this step from appearing to fail if the server output files don't exist
+      - cat tests/log/* || true
+      - "# If you can't see all output, then use the download button"
+    when:
+      - event: pull_request
+        status: failure
 
   publish_plugins:
     image: woodpeckerci/plugin-release
@@ -81,8 +87,7 @@ steps:
 
 services:
   database:
-    # 15-alpine image necessary because of diesel tests
-    image: pgautoupgrade/pgautoupgrade:15-alpine
+    image: pgautoupgrade/pgautoupgrade:16-alpine
     environment:
       POSTGRES_DB: lemmy
       POSTGRES_USER: lemmy

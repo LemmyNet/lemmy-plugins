@@ -1,6 +1,6 @@
 jest.setTimeout(120000);
 
-import { CreatePostLike } from "lemmy-js-client";
+import { CreatePostLike, LemmyError, LemmyHttp } from "lemmy-js-client";
 import {
   alpha,
   setupLogins,
@@ -8,13 +8,16 @@ import {
   createCommunity,
   registerUser,
   alphaUrl,
+  isPluginActive,
 } from "./shared";
+import { AllLemmyErrors } from "lemmy-js-client/dist/types/AllLemmyErrors";
 
 beforeAll(async () => {
   await setupLogins();
 });
 
 test("Rust allowed voters", async () => {
+  await isPluginActive(alpha, "Allowed Voters");
   let community = await createCommunity(alpha);
   let postRes = await createPost(
     alpha,
@@ -25,9 +28,12 @@ test("Rust allowed voters", async () => {
 
   // user has no posts and is not allowed to vote
   let new_user = await registerUser(alpha, alphaUrl, "new_user");
-  let form: CreatePostLike = { post_id: postRes.post_view.post.id, score: -1 };
-  await expect(new_user.likePost(form)).rejects.toStrictEqual(
-    Error("plugin_error"),
+  let form: CreatePostLike = {
+    post_id: postRes.post_view.post.id,
+    is_upvote: false,
+  };
+  await expect(new_user.likePost(form)).rejects.toThrow(
+    "user is not allowed to downvote",
   );
 
   // create a few posts
@@ -41,5 +47,5 @@ test("Rust allowed voters", async () => {
 
   // now user is allowed to vote
   let vote = await new_user.likePost(form);
-  expect(vote.post_view.post_actions?.liked).toBeDefined();
+  expect(vote.post_view.post_actions?.vote_is_upvote).toBeFalsy();
 });

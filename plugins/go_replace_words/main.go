@@ -16,7 +16,7 @@ type Metadata struct {
 //go:wasmexport metadata
 func metadata() int32 {
 	metadata := Metadata {
-		Name: "Test Plugin",
+		Name: "Replace Words",
 		Url: "https://example.com",
 		Description: "Plugin to test Lemmy feature",
 	}
@@ -29,8 +29,8 @@ func metadata() int32 {
 }
 
 // This hook gets called when a local user creates a new post
-//go:wasmexport before_create_local_post
-func create_local_post() int32 {
+//go:wasmexport local_post_before_create
+func local_post_before_create() int32 {
 	// Load user parameters into a map, to make sure we return all the same fields later
 	// and dont drop anything
 	params := make(map[string]interface{})
