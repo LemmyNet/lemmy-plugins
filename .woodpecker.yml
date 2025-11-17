@@ -30,14 +30,14 @@ steps:
     image: rust:1.91
     commands:
       - rustup target add wasm32-unknown-unknown
-      - pushd plugins/rust_allowed_voters
+      - cd plugins/rust_allowed_voters
       - cargo build
       - cp target/wasm32-unknown-unknown/debug/rust_allowed_voters.wasm ..
-      - popd
-      - pushd plugins/rust_lingua
+      - cd -
+      - cd plugins/rust_lingua
       - cargo build
       - cp target/wasm32-unknown-unknown/debug/rust_lingua.wasm ..
-      - popd
+      - cd -
     when:
       - event: [pull_request, tag]
 
