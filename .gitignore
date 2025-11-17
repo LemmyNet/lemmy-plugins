@@ -12,6 +12,8 @@ tests/log
 # plugins
 plugins/rust_allowed_voters/target
 plugins/rust_allowed_voters/Cargo.lock
+plugins/rust_lingua/target
+plugins/rust_lingua/Cargo.lock
 plugins/typescript_push_webhook/dist
 plugins/typescript_push_webhook/node_modules
 
