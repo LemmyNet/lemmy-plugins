@@ -58,7 +58,7 @@ pub fn local_post_before_create(
 struct AllLanguages(Vec<LemmyLanguage>);
 
 fn all_languages() -> FnResult<Vec<LemmyLanguage>> {
-    const KEY: &'static str = "all_languages";
+    const KEY: &str = "all_languages";
     let langs = var::get::<AllLanguages>(KEY)?;
     if let Some(langs) = langs {
         Ok(langs.0)

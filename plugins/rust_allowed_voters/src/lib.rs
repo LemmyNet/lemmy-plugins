@@ -1,33 +1,24 @@
-use crate::json::Value;
 use extism_pdk::*;
 use lemmy_api_common::person::GetPersonDetailsResponse;
-use serde::Serialize;
-use std::collections::HashMap;
-
-#[derive(Serialize)]
-struct Metadata {
-    name: String,
-    url: String,
-    description: String,
-}
+use lemmy_api_common::plugin::PluginMetadata;
+use lemmy_api_common::post::PostLikeForm;
+use url::Url;
 
 // Returns info about the plugin which gets included in /api/v4/site
 //go:wasmexport metadata
 #[plugin_fn]
-pub fn metadata() -> FnResult<Json<Metadata>> {
-    Ok(Json(Metadata {
+pub fn metadata() -> FnResult<Json<PluginMetadata>> {
+    Ok(Json(PluginMetadata {
         name: "Allowed Voters".to_string(),
-        url: "https://example.com".to_string(),
+        url: Url::parse("https://example.com").unwrap(),
         description: "Plugin to test Lemmy feature".to_string(),
     }))
 }
 
 #[plugin_fn]
-pub fn post_before_vote(
-    Json(vote): Json<HashMap<String, Value>>,
-) -> FnResult<Json<HashMap<String, Value>>> {
+pub fn post_before_vote(Json(vote): Json<PostLikeForm>) -> FnResult<Json<PostLikeForm>> {
     let lemmy_url = config::get("lemmy_url")?.unwrap();
-    let person_id = vote.get("person_id").unwrap();
+    let person_id = vote.person_id.0;
     let req = HttpRequest {
         url: format!("{lemmy_url}api/v4/person?person_id={person_id}"),
         headers: Default::default(),
@@ -35,8 +26,7 @@ pub fn post_before_vote(
     };
     let res: GetPersonDetailsResponse = http::request::<()>(&req, None)?.json()?;
     let person_post_count = res.person_view.person.post_count;
-    info!("{:?}", vote);
-    let is_upvote = vote.get("vote_is_upvote").and_then(Value::as_bool).unwrap();
+    let is_upvote = vote.vote_is_upvote;
     if person_post_count < 5 && !is_upvote {
         return Err(Error::msg("user is not allowed to downvote").into());
     }
