@@ -2,17 +2,16 @@ use extism_pdk::*;
 use lemmy_api_common::person::GetPersonDetailsResponse;
 use lemmy_api_common::plugin::PluginMetadata;
 use lemmy_api_common::post::PostLikeForm;
-use url::Url;
 
 // Returns info about the plugin which gets included in /api/v4/site
 //go:wasmexport metadata
 #[plugin_fn]
 pub fn metadata() -> FnResult<Json<PluginMetadata>> {
-    Ok(Json(PluginMetadata {
-        name: "Allowed Voters".to_string(),
-        url: Url::parse("https://example.com").unwrap(),
-        description: "Plugin to test Lemmy feature".to_string(),
-    }))
+    Ok(Json(PluginMetadata::new(
+        "Allowed Voters",
+        "https://github.com/LemmyNet/lemmy-plugins/",
+        "Prevent users with few posts from voting",
+    )))
 }
 
 #[plugin_fn]

@@ -10,4 +10,3 @@ crate-type = ["cdylib"]
 extism-pdk = "1.3.0"
 serde = { version = "1", features = ["derive"] }
 lemmy_api_common = { git = "https://github.com/LemmyNet/lemmy.git", branch = "plugin-api" }
-url = "2.5.7"

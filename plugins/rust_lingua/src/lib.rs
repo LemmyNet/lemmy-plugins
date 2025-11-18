@@ -1,12 +1,12 @@
+use extism_pdk::config;
+use extism_pdk::http;
+use extism_pdk::plugin_fn;
+use extism_pdk::var;
 use extism_pdk::FnResult;
 use extism_pdk::FromBytes;
 use extism_pdk::HttpRequest;
 use extism_pdk::Json;
 use extism_pdk::ToBytes;
-use extism_pdk::config;
-use extism_pdk::http;
-use extism_pdk::plugin_fn;
-use extism_pdk::var;
 use lemmy_api_common::language::Language as LemmyLanguage;
 use lemmy_api_common::plugin::PluginMetadata;
 use lemmy_api_common::post::PostInsertForm;
@@ -15,16 +15,15 @@ use lingua::LanguageDetector;
 use lingua::LanguageDetectorBuilder;
 use serde::Deserialize;
 use serde::Serialize;
-use url::Url;
 
 // Returns info about the plugin which gets included in /api/v4/site
 #[plugin_fn]
 pub fn metadata() -> FnResult<Json<PluginMetadata>> {
-    Ok(Json(PluginMetadata {
-        name: "Lingua".to_string(),
-        url: Url::parse("https://github.com/LemmyNet/lemmy-plugins/").unwrap(),
-        description: "Automatic language tagging for posts and comments".to_string(),
-    }))
+    Ok(Json(PluginMetadata::new(
+        "Lingua",
+        "https://github.com/LemmyNet/lemmy-plugins/",
+        "Automatic language tagging for posts and comments",
+    )))
 }
 
 #[plugin_fn]
