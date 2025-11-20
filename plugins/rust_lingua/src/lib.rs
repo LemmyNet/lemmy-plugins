@@ -1,15 +1,16 @@
-use extism_pdk::config;
-use extism_pdk::http;
-use extism_pdk::plugin_fn;
-use extism_pdk::var;
 use extism_pdk::FnResult;
 use extism_pdk::FromBytes;
 use extism_pdk::HttpRequest;
 use extism_pdk::Json;
 use extism_pdk::ToBytes;
+use extism_pdk::config;
+use extism_pdk::http;
+use extism_pdk::plugin_fn;
+use extism_pdk::var;
 use lemmy_api_common::language::Language as LemmyLanguage;
 use lemmy_api_common::plugin::PluginMetadata;
 use lemmy_api_common::post::PostInsertForm;
+use lemmy_api_common::site::GetSiteResponse;
 use lingua::Language;
 use lingua::LanguageDetector;
 use lingua::LanguageDetectorBuilder;
@@ -68,8 +69,9 @@ fn all_languages() -> FnResult<Vec<LemmyLanguage>> {
             headers: Default::default(),
             method: Some("GET".to_string()),
         };
-        let res: Vec<LemmyLanguage> = http::request::<()>(&req, None)?.json()?;
-        var::set(KEY, AllLanguages(res.clone()))?;
-        Ok(res)
+        let site: GetSiteResponse = http::request::<()>(&req, None)?.json()?;
+        let langs = site.all_languages;
+        var::set(KEY, AllLanguages(langs.clone()))?;
+        Ok(langs)
     }
 }

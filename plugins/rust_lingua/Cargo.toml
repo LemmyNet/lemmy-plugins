@@ -9,7 +9,7 @@ crate-type = ["cdylib"]
 [dependencies]
 # Enable only the languages which are most common on Lemmy
 # `select l from language l left join post p on l.id = p.language_id group by l.id order by count(p.id) desc;`
-lingua = { version = "1.7.2", default-features = false, features = [
+lingua = { git = "https://github.com/Nutomic/lingua-rs", branch = "wasm-bindgen-feature", default-features = false, features = [
   "english",
   "dutch",
   "german",
