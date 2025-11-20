@@ -1,3 +1,5 @@
+use std::cell::LazyCell;
+
 use extism_pdk::FnResult;
 use extism_pdk::FromBytes;
 use extism_pdk::HttpRequest;
@@ -20,12 +22,20 @@ use serde::Serialize;
 // Returns info about the plugin which gets included in /api/v4/site
 #[plugin_fn]
 pub fn metadata() -> FnResult<Json<PluginMetadata>> {
+    // initialize the detector because it takes a long time (~5s)
+    LazyCell::<LanguageDetector>::force(&DETECTOR);
+
     Ok(Json(PluginMetadata::new(
         "Lingua",
         "https://github.com/LemmyNet/lemmy-plugins/",
         "Automatic language tagging for posts and comments",
     )))
 }
+
+// Usage: https://docs.rs/lingua/1.7.2/lingua/index.html
+// There are various optimizations available, which could be exposed as plugin settings
+const DETECTOR: LazyCell<LanguageDetector> =
+    LazyCell::new(|| LanguageDetectorBuilder::from_all_languages().build());
 
 #[plugin_fn]
 pub fn local_post_before_create(
@@ -38,10 +48,7 @@ pub fn local_post_before_create(
 
     let content = format!("{} {}", form.name, form.body.clone().unwrap_or_default());
 
-    // Usage: https://docs.rs/lingua/1.7.2/lingua/index.html
-    // There are various optimizations available, which could be exposed as plugin settings
-    let detector: LanguageDetector = LanguageDetectorBuilder::from_all_languages().build();
-    let detected_language: Option<Language> = detector.detect_language_of(content);
+    let detected_language: Option<Language> = DETECTOR.detect_language_of(content);
 
     if let Some(detected_language) = detected_language {
         let all_langs = all_languages()?;
