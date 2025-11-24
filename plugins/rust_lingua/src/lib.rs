@@ -9,7 +9,9 @@ use extism_pdk::config;
 use extism_pdk::http;
 use extism_pdk::plugin_fn;
 use extism_pdk::var;
+use lemmy_api_common::comment::CommentInsertForm;
 use lemmy_api_common::language::Language as LemmyLanguage;
+use lemmy_api_common::language::LanguageId;
 use lemmy_api_common::plugin::PluginMetadata;
 use lemmy_api_common::post::PostInsertForm;
 use lemmy_api_common::site::GetSiteResponse;
@@ -41,23 +43,49 @@ const DETECTOR: LazyCell<LanguageDetector> =
 pub fn local_post_before_create(
     Json(mut form): Json<PostInsertForm>,
 ) -> FnResult<Json<PostInsertForm>> {
-    if form.language_id.is_some() {
-        // already has a language, no need to analyze
-        return Ok(Json(form));
-    }
-
     let content = format!("{} {}", form.name, form.body.clone().unwrap_or_default());
-
-    let detected_language: Option<Language> = DETECTOR.detect_language_of(content);
-
-    if let Some(detected_language) = detected_language {
-        let all_langs = all_languages()?;
-        let lang = all_langs
-            .iter()
-            .find(|l| l.code == detected_language.iso_code_639_1().to_string());
-        form.language_id = lang.map(|l| l.id);
-    }
+    detect_language(content, &mut form.language_id)?;
     Ok(Json(form))
+}
+
+#[plugin_fn]
+pub fn local_comment_before_create(
+    Json(mut form): Json<CommentInsertForm>,
+) -> FnResult<Json<CommentInsertForm>> {
+    detect_language(form.content.clone(), &mut form.language_id)?;
+    Ok(Json(form))
+}
+
+#[plugin_fn]
+pub fn federated_post_before_receive(
+    Json(mut form): Json<PostInsertForm>,
+) -> FnResult<Json<PostInsertForm>> {
+    let content = format!("{} {}", form.name, form.body.clone().unwrap_or_default());
+    detect_language(content, &mut form.language_id)?;
+    Ok(Json(form))
+}
+
+#[plugin_fn]
+pub fn federated_comment_before_receive(
+    Json(mut form): Json<CommentInsertForm>,
+) -> FnResult<Json<CommentInsertForm>> {
+    detect_language(form.content.clone(), &mut form.language_id)?;
+    Ok(Json(form))
+}
+
+fn detect_language(content: String, language_id: &mut Option<LanguageId>) -> FnResult<()> {
+    if language_id.is_none() {
+        let detected_language: Option<Language> = DETECTOR.detect_language_of(content);
+
+        if let Some(detected_language) = detected_language {
+            let all_langs = all_languages()?;
+            let lang = all_langs
+                .iter()
+                .find(|l| l.code == detected_language.iso_code_639_1().to_string());
+            *language_id = lang.map(|l| l.id);
+        }
+    }
+    Ok(())
 }
 
 #[derive(Deserialize, Serialize, FromBytes, ToBytes)]
