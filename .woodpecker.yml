@@ -26,13 +26,18 @@ steps:
     when:
       - event: [pull_request, tag]
 
-  build_rust_plugin:
-    image: rust:1.90
+  build_rust_plugins:
+    image: rust:1.91
     commands:
       - rustup target add wasm32-unknown-unknown
       - cd plugins/rust_allowed_voters
       - cargo build
       - cp target/wasm32-unknown-unknown/debug/rust_allowed_voters.wasm ..
+      - cd -
+      - cd plugins/rust_lingua
+      - cargo build
+      - cp target/wasm32-unknown-unknown/debug/rust_lingua.wasm ..
+      - cd -
     when:
       - event: [pull_request, tag]
 
@@ -77,6 +82,7 @@ steps:
     settings:
       files:
         - plugins/rust_allowed_voters.wasm
+        - plugins/rust_lingua.wasm
         - plugins/go_replace_words.wasm
         - plugins/typescript_push_webhook.wasm
       title: ${CI_COMMIT_TAG##v}

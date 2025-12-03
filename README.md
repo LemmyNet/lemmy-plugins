@@ -42,6 +42,10 @@ cargo build
 cp target/wasm32-unknown-unknown/debug/rust_allowed_voters.wasm ..
 ```
 
+## Rust: Lingua
+
+Automatic language tagging for new posts and comments using [Lingua](https://github.com/pemistahl/lingua-rs). Compilation steps are the same as above.
+
 ## Tests
 
 This repository contains test cases for the plugins. To run them install `pnpm` and `postgresql`, with a database `postgres://lemmy:password@localhost:5432/lemmy`. Then compile all the plugins as described above, go into `tests` folder and execute `./run.sh`.

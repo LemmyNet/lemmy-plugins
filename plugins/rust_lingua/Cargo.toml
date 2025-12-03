@@ -1,0 +1,27 @@
+[package]
+name = "rust_lingua"
+version = "0.1.0"
+edition = "2024"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+# Enable only the languages which are most common on Lemmy
+# `select l from language l left join post p on l.id = p.language_id group by l.id order by count(p.id) desc;`
+lingua = { git = "https://github.com/Nutomic/lingua-rs", branch = "wasm-bindgen-feature", default-features = false, features = [
+  "english",
+  "dutch",
+  "german",
+  "french",
+  "spanish",
+  "polish",
+  "danish",
+  "portuguese",
+  "italian",
+  "swedish",
+  "finnish",
+] }
+extism-pdk = "1.3.0"
+serde = { version = "1", features = ["derive"] }
+lemmy_api_common = { git = "https://github.com/LemmyNet/lemmy.git" }
