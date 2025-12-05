@@ -29,17 +29,18 @@ steps:
   build_rust_plugins:
     image: rust:1.91
     commands:
-      - rustup target add wasm32-unknown-unknown
-      - cd plugins/rust_allowed_voters
-      - cargo build
-      - cp target/wasm32-unknown-unknown/debug/rust_allowed_voters.wasm ..
-      - cd -
-      - cd plugins/rust_lingua
-      - cargo build
-      - cp target/wasm32-unknown-unknown/debug/rust_lingua.wasm ..
-      - cd -
+      - ./scripts/ci-build-rust.sh rust_allowed_voters
+      - ./scripts/ci-build-rust.sh rust_lingua
     when:
-      - event: [pull_request, tag]
+      - event: [pull_request]
+
+  build_rust_plugins_release:
+    image: rust:1.91
+    commands:
+      - ./scripts/ci-build-rust.sh rust_allowed_voters release
+      - ./scripts/ci-build-rust.sh rust_lingua release
+    when:
+      - event: [tag]
 
   build_go_plugin:
     image: tinygo/tinygo:latest
