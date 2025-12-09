@@ -24,4 +24,4 @@ lingua = { git = "https://github.com/Nutomic/lingua-rs", branch = "wasm-bindgen-
 ] }
 extism-pdk = "1.3.0"
 serde = { version = "1", features = ["derive"] }
-lemmy_api_common = { git = "https://github.com/LemmyNet/lemmy.git" }
+lemmy_api_common = { git = "https://github.com/LemmyNet/lemmy.git", branch = "public-oauth-provider" }
