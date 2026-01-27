@@ -1,0 +1,9 @@
+{
+  hostname: lemmy
+  plugins: [
+    {
+      file: plugins/rust_captcha.wasm
+      hash: 52e45994c9da2fa5777b7b47d715f93d3000cda9eb8a9b8311edd7bd2da149fc
+    }
+  ]
+}
