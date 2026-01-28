@@ -53,9 +53,13 @@ struct CaptchaAnswer {
 }
 
 #[plugin_fn]
-pub fn validate_captcha(Json(form): Json<CaptchaAnswer>) -> FnResult<bool> {
+pub fn validate_captcha(Json(form): Json<CaptchaAnswer>) -> FnResult<()> {
     let answer: String = var::get(form.uuid)?.unwrap_or_default();
-    return Ok(answer == form.answer);
+    if answer.to_lowercase() == form.answer.to_lowercase() {
+        Ok(())
+    } else {
+        Err(anyhow!("Wrong answer"))?
+    }
 }
 
 /// Converts the captcha to a base64 encoded wav audio file
