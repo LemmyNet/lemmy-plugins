@@ -1,5 +1,4 @@
-use std::cell::LazyCell;
-
+use std::sync::LazyLock;
 use extism_pdk::FnResult;
 use extism_pdk::FromBytes;
 use extism_pdk::HttpRequest;
@@ -25,7 +24,7 @@ use serde::Serialize;
 #[plugin_fn]
 pub fn metadata() -> FnResult<Json<PluginMetadata>> {
     // initialize the detector because it takes a long time (~5s)
-    LazyCell::<LanguageDetector>::force(&DETECTOR);
+    LazyLock::<LanguageDetector>::force(&DETECTOR);
 
     Ok(Json(PluginMetadata::new(
         "Lingua",
@@ -36,8 +35,8 @@ pub fn metadata() -> FnResult<Json<PluginMetadata>> {
 
 // Usage: https://docs.rs/lingua/1.7.2/lingua/index.html
 // There are various optimizations available, which could be exposed as plugin settings
-const DETECTOR: LazyCell<LanguageDetector> =
-    LazyCell::new(|| LanguageDetectorBuilder::from_all_languages().build());
+static DETECTOR: LazyLock<LanguageDetector> =
+    LazyLock::new(|| LanguageDetectorBuilder::from_all_languages().build());
 
 #[plugin_fn]
 pub fn local_post_before_create(
