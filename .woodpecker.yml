@@ -29,7 +29,7 @@ steps:
   build_rust_plugins:
     image: rust:1.91
     commands:
-      - ./scripts/ci-build-rust.sh rust_allowed_voters wasm32-wasip1
+      - ./scripts/ci-build-rust.sh rust_allowed_voters debug wasm32-wasip1
       - ./scripts/ci-build-rust.sh rust_lingua
       - ./scripts/ci-build-rust.sh rust_captcha debug wasm32-wasip1
     when:
