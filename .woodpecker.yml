@@ -60,6 +60,7 @@ steps:
     environment:
       LEMMY_DATABASE_URL: postgres://lemmy:password@database:5432
       DO_WRITE_HOSTS_FILE: "1"
+      DANGER_PLUGIN_SKIP_HASH_CHECK: 1
     commands:
       - npm install -g corepack@latest && corepack enable pnpm
       - apt-get update && apt-get install -y --no-install-recommends --no-install-suggests bash curl postgresql-client ca-certificates
