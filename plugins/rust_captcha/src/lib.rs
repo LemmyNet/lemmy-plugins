@@ -7,11 +7,9 @@ use extism_pdk::plugin_fn;
 use extism_pdk::var;
 use extism_pdk::FnResult;
 use extism_pdk::Json;
-use extism_pdk::ToBytes;
+use lemmy_api_common::account::auth::CaptchaAnswer;
 use lemmy_api_common::account::auth::CaptchaResponse;
 use lemmy_api_common::plugin::PluginMetadata;
-use serde::Deserialize;
-use serde::Serialize;
 use std::io::Cursor;
 use uuid::Uuid;
 
@@ -42,14 +40,6 @@ pub fn get_captcha() -> FnResult<Json<CaptchaResponse>> {
     var::set(uuid.clone(), answer)?;
 
     Ok(Json(CaptchaResponse { png, wav, uuid }))
-}
-
-// TODO: this is currently defined twice, here and in lemmy
-#[derive(ToBytes, Deserialize, Serialize)]
-#[encoding(Json)]
-struct CaptchaAnswer {
-    answer: String,
-    uuid: String,
 }
 
 #[plugin_fn]
