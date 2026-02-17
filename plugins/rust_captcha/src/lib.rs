@@ -44,7 +44,8 @@ pub fn get_captcha() -> FnResult<Json<CaptchaResponse>> {
 
 #[plugin_fn]
 pub fn validate_captcha(Json(form): Json<CaptchaAnswer>) -> FnResult<()> {
-    let answer: String = var::get(form.uuid)?.unwrap_or_default();
+    let answer: String = var::get(&form.uuid)?.unwrap_or_default();
+    var::remove(form.uuid)?;
     if answer.to_lowercase() == form.answer.to_lowercase() {
         Ok(())
     } else {
