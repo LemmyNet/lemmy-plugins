@@ -87,6 +87,7 @@ steps:
       files:
         - plugins/rust_allowed_voters.wasm
         - plugins/rust_lingua.wasm
+        - plugins/rust_captcha.wasm
         - plugins/go_replace_words.wasm
         - plugins/typescript_push_webhook.wasm
       title: ${CI_COMMIT_TAG##v}
