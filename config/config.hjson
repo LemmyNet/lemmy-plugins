@@ -1,0 +1,22 @@
+{
+  hostname: lemmy
+  plugins: [
+    {
+      file: plugins/rust_captcha.wasm
+    },
+    {
+        file: "plugins/go_replace_words.wasm"
+    },
+    {
+      file: "plugins/rust_allowed_voters.wasm"
+      allowed_hosts: ["0.0.0.0"]
+    },
+    {
+      file: plugins/typescript_push_webhook.wasm
+      "allowed_hosts": ["127.0.0.1"],
+      "config": {
+        "notify_url": "http://127.0.0.1:8927"
+      }
+    }
+  ]
+}

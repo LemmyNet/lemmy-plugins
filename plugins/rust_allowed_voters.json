@@ -1,8 +1,0 @@
-{
-  "wasm": [
-    {
-      "path": "plugins/rust_allowed_voters.wasm"
-    }
-  ],
-  "allowed_hosts": ["0.0.0.0"]
-}

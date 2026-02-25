@@ -29,16 +29,18 @@ steps:
   build_rust_plugins:
     image: rust:1.91
     commands:
-      - ./scripts/ci-build-rust.sh rust_allowed_voters
+      - ./scripts/ci-build-rust.sh rust_allowed_voters debug wasm32-wasip1
       - ./scripts/ci-build-rust.sh rust_lingua
+      - ./scripts/ci-build-rust.sh rust_captcha debug wasm32-wasip1
     when:
       - event: [pull_request]
 
   build_rust_plugins_release:
     image: rust:1.91
     commands:
-      - ./scripts/ci-build-rust.sh rust_allowed_voters release
+      - ./scripts/ci-build-rust.sh rust_allowed_voters release wasm32-wasip1
       - ./scripts/ci-build-rust.sh rust_lingua release
+      - ./scripts/ci-build-rust.sh rust_captcha release wasm32-wasip1
     when:
       - event: [tag]
 
@@ -58,6 +60,7 @@ steps:
     environment:
       LEMMY_DATABASE_URL: postgres://lemmy:password@database:5432
       DO_WRITE_HOSTS_FILE: "1"
+      DANGER_PLUGIN_SKIP_HASH_CHECK: 1
     commands:
       - npm install -g corepack@latest && corepack enable pnpm
       - apt-get update && apt-get install -y --no-install-recommends --no-install-suggests bash curl postgresql-client ca-certificates

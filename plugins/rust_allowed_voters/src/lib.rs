@@ -25,7 +25,7 @@ pub fn post_before_vote(Json(vote): Json<PostLikeForm>) -> FnResult<Json<PostLik
     };
     let res: GetPersonDetailsResponse = http::request::<()>(&req, None)?.json()?;
     let person_post_count = res.person_view.person.post_count;
-    let is_upvote = vote.vote_is_upvote;
+    let is_upvote = vote.vote_is_upvote.unwrap_or_default().unwrap_or_default();
     if person_post_count < 5 && !is_upvote {
         return Err(Error::msg("user is not allowed to downvote").into());
     }
