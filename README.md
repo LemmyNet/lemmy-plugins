@@ -1,6 +1,7 @@
 # Lemmy Plugins
 
 This repository contains various example plugins for Lemmy. See the following links for more information:
+
 - [Lemmy Plugin Documentation](https://join-lemmy.org/docs/contributors/08-plugins.html)
 - [Lemmy Plugin RFC](https://github.com/LemmyNet/rfcs/blob/main/0008-plugins.md)
 - [Extism documentation](https://extism.org/docs/quickstart/plugin-quickstart)

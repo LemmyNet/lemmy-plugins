@@ -10,6 +10,9 @@
     {
       file: "plugins/rust_allowed_voters.wasm"
       allowed_hosts: ["0.0.0.0"]
+      config: {
+        downvote_mode: none
+      }
     },
     {
       file: plugins/typescript_push_webhook.wasm

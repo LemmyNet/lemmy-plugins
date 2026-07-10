@@ -18,3 +18,5 @@ plugins/typescript_push_webhook/node_modules
 # lemmy plugins
 *.wasm
 
+# lemmy binary
+lemmy_server
