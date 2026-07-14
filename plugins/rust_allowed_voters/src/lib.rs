@@ -2,8 +2,6 @@ use extism_pdk::*;
 use lemmy_api_common::person::GetPersonDetailsResponse;
 use lemmy_api_common::plugin::PluginMetadata;
 use lemmy_api_common::post::PostLikeForm;
-use serde::Deserialize;
-use serde::de::IntoDeserializer;
 
 // Returns info about the plugin which gets included in /api/v4/site
 //go:wasmexport metadata
@@ -16,28 +14,14 @@ pub fn metadata() -> FnResult<Json<PluginMetadata>> {
     )))
 }
 
-#[derive(PartialEq, Default, Deserialize)]
-#[serde(rename_all = "lowercase")]
-enum VotingMode {
-    #[default]
-    All,
-    Local,
-    None,
-}
-
-fn parse_voting_mode(s: Option<String>) -> Result<VotingMode, serde::de::value::Error> {
-    let s = s.unwrap_or("all".to_string());
-    VotingMode::deserialize(s.into_deserializer())
-}
 #[plugin_fn]
 pub fn post_before_vote(Json(vote): Json<PostLikeForm>) -> FnResult<Json<PostLikeForm>> {
     let lemmy_url = config::get("lemmy_url")?.unwrap();
     let person_id = vote.person_id.0;
-    let is_upvote = vote.vote_is_upvote == Some(Some(true));
     let is_downvote = vote.vote_is_upvote == Some(Some(false));
 
-    let upvote_mode: VotingMode = parse_voting_mode(config::get("upvote_mode")?)?;
-    let downvote_mode: VotingMode = parse_voting_mode(config::get("downvote_mode")?)?;
+    let allowed_downvote_instances = config::get("allowed_downvote_instances")?.unwrap_or_default();
+    let allowed_downvote_instances = allowed_downvote_instances.split(",").collect::<Vec<_>>();
 
     let req = HttpRequest {
         url: format!("{lemmy_url}api/v4/person?person_id={person_id}"),
@@ -45,16 +29,12 @@ pub fn post_before_vote(Json(vote): Json<PostLikeForm>) -> FnResult<Json<PostLik
         method: Some("GET".to_string()),
     };
     let res: GetPersonDetailsResponse = http::request::<()>(&req, None)?.json()?;
-    let is_local = res.person_view.person.local;
-    if is_upvote
-        && (upvote_mode == VotingMode::None || (upvote_mode == VotingMode::Local && !is_local))
-    {
-        return Err(Error::msg("upvote not allowed").into());
-    }
-    if is_downvote
-        && (downvote_mode == VotingMode::None || (downvote_mode == VotingMode::Local && !is_local))
-    {
-        return Err(Error::msg("downvote not allowed").into());
+    let person_is_local = res.person_view.person.local;
+    if is_downvote && !person_is_local && !allowed_downvote_instances.is_empty() {
+        let person_instance = res.person_view.person.ap_id.domain().unwrap();
+        if !allowed_downvote_instances.contains(&person_instance) {
+            return Err(Error::msg(format!("downvote not allowed from {person_instance}")).into());
+        }
     }
 
     let min_posts_for_downvote: i32 = config::get("min_posts_for_downvote")?

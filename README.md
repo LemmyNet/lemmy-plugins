@@ -35,7 +35,11 @@ npm run build
 
 ## Rust: Allowed Voters
 
-Listens to `new_vote` hook, then calls `/api/v4/person` to get details about the voter. It only allows downvotes if the user has made at least 5 posts before. See [rust-pdk readme](https://github.com/extism/rust-pdk?tab=readme-ov-file) for setup and detailed documentation.
+Listens to `new_vote` hook, then calls `/api/v4/person` to get details about the voter. Set `min_posts_for_downvote` to allow only users with at least X
+posts to downvote. Or set `allowed_downvote_instances` to a comma-separated
+list of domains to allow downvotes only from those domains.
+
+See [rust-pdk readme](https://github.com/extism/rust-pdk?tab=readme-ov-file) for setup and detailed documentation.
 
 Use the following steps to compile it:
 
