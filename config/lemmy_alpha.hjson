@@ -17,10 +17,13 @@
     {
       file: "plugins/rust_allowed_voters.wasm"
       allowed_hosts: ["0.0.0.0"]
+      "config": {
+        "min_posts_for_downvote": "5"
+      }
     },
     {
       file: plugins/typescript_push_webhook.wasm
-      "allowed_hosts": ["127.0.0.1"],
+      "allowed_hosts": ["127.0.0.1"]
       "config": {
         "notify_url": "http://127.0.0.1:8927"
       }
