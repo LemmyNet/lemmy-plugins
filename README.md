@@ -1,6 +1,7 @@
 # Lemmy Plugins
 
 This repository contains various example plugins for Lemmy. See the following links for more information:
+
 - [Lemmy Plugin Documentation](https://join-lemmy.org/docs/contributors/08-plugins.html)
 - [Lemmy Plugin RFC](https://github.com/LemmyNet/rfcs/blob/main/0008-plugins.md)
 - [Extism documentation](https://extism.org/docs/quickstart/plugin-quickstart)
@@ -28,6 +29,16 @@ Use the following steps to compile it:
 apt install npm typescript
 # use steps in js-pdk readme to install extism-js
 cd plugins/typescript_push_webhook
+npm install
+npm run build
+```
+
+## Typescript: Block Spam Registrations
+
+Uses the `local_user_before_register` hook to reject registrations where the email domain is listed in the plugin config (see `config/config.hjson`). Use the following steps to compile it:
+
+```bash
+cd plugins/typescript_block_spam_registrations
 npm install
 npm run build
 ```

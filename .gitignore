@@ -12,8 +12,8 @@ tests/log
 plugins/rust_allowed_voters/target
 plugins/rust_lingua/target
 plugins/rust_captcha/target
-plugins/typescript_push_webhook/dist
-plugins/typescript_push_webhook/node_modules
+plugins/*/dist
+plugins/*/node_modules
 
 # lemmy plugins
 *.wasm

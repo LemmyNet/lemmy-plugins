@@ -17,6 +17,12 @@
       "config": {
         "notify_url": "http://127.0.0.1:8927"
       }
+    },
+    {
+      file: plugins/typescript_block_spam_registrations.wasm
+      config: {
+        blocked_domains: "ilands.app"
+      }
     }
   ]
 }
