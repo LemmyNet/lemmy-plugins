@@ -1,6 +1,6 @@
 steps:
   prettier_check:
-    image: tmknom/prettier:3.2.5
+    image: jauderho/prettier:3.9.5-alpine
     commands:
       - prettier -c .
     when:
@@ -27,7 +27,7 @@ steps:
       - event: [pull_request, tag]
 
   build_rust_plugins:
-    image: rust:1.91
+    image: rust:1.96
     commands:
       - ./scripts/ci-build-rust.sh rust_allowed_voters debug wasm32-wasip1
       - ./scripts/ci-build-rust.sh rust_lingua
@@ -36,7 +36,7 @@ steps:
       - event: [pull_request]
 
   build_rust_plugins_release:
-    image: rust:1.91
+    image: rust:1.96
     commands:
       - ./scripts/ci-build-rust.sh rust_allowed_voters release wasm32-wasip1
       - ./scripts/ci-build-rust.sh rust_lingua release
@@ -63,7 +63,9 @@ steps:
       DANGER_PLUGIN_SKIP_HASH_CHECK: 1
     commands:
       - npm install -g corepack@latest && corepack enable pnpm
-      - apt-get update && apt-get install -y --no-install-recommends --no-install-suggests bash curl postgresql-client ca-certificates
+      - apt-get update && apt-get install -y
+        --no-install-recommends --no-install-suggests
+        bash curl postgresql-client ca-certificates wget
       - bash tests/prepare.sh
       - cd tests/
       - pnpm i

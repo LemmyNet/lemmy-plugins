@@ -10,6 +10,9 @@
     {
       file: "plugins/rust_allowed_voters.wasm"
       allowed_hosts: ["0.0.0.0"]
+      config: {
+        allowed_downvote_instances: lemmy-alpha
+      }
     },
     {
       file: plugins/typescript_push_webhook.wasm

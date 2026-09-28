@@ -29,6 +29,13 @@ fi
 
 LOG_DIR=tests/log
 mkdir -p $LOG_DIR
+export DANGER_PLUGIN_SKIP_HASH_CHECK=1
+
+if [ ! -f lemmy_server ]; then
+  wget "https://github.com/LemmyNet/lemmy/releases/download/1.0.0-beta.1/lemmy_server.gz"
+  gunzip lemmy_server.gz -f
+  chmod +x lemmy_server
+fi
 
 echo "start alpha"
 LEMMY_CONFIG_LOCATION=./config/lemmy_alpha.hjson \
