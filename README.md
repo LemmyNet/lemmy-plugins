@@ -33,6 +33,16 @@ npm install
 npm run build
 ```
 
+## Typescript: Block Spam Registrations
+
+Uses the `local_user_before_register` hook to reject registrations where the email domain is listed in the plugin config (see `config/config.hjson`). Use the following steps to compile it:
+
+```bash
+cd plugins/typescript_block_spam_registrations
+npm install
+npm run build
+```
+
 ## Rust: Allowed Voters
 
 Listens to `new_vote` hook, then calls `/api/v4/person` to get details about the voter. Set `min_posts_for_downvote` to allow only users with at least X

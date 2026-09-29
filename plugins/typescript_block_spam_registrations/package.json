@@ -1,0 +1,17 @@
+{
+  "name": "typescript_block_spam_registrations",
+  "version": "0.0.1",
+  "description": "Lemmy plugin which rejects registrations from spam email domains",
+  "main": "src/index.ts",
+  "scripts": {
+    "build": "tsc --noEmit && node esbuild.js && extism-js dist/index.js -i src/index.d.ts -o ../typescript_block_spam_registrations.wasm"
+  },
+  "author": "Nutomic",
+  "license": "AGPL-3.0",
+  "devDependencies": {
+    "@extism/js-pdk": "^1.0.1",
+    "esbuild": "^0.19.6",
+    "lemmy-js-client": "1.0.0-api-updates-3.2",
+    "typescript": "^5.3.2"
+  }
+}
