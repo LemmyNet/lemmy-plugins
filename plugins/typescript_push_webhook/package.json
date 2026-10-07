@@ -7,7 +7,7 @@
     "build": "tsc --noEmit && node esbuild.js && extism-js dist/index.js -i src/index.d.ts -o ../typescript_push_webhook.wasm"
   },
   "keywords": [],
-  "author": "",
+  "author": "Nutomic",
   "license": "BSD-3-Clause",
   "devDependencies": {
     "@extism/js-pdk": "^1.0.1",
