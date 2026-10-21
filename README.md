@@ -1,5 +1,7 @@
 # Lemmy Plugins
 
+Lemmy 1.0 has experimental support for WASM plugins. Depending on feedback for the current implementation, there may be breaking changes to the plugin API after 1.0 is released. See the [plugins label](https://github.com/LemmyNet/lemmy/issues?q=state%3Aopen%20label%3A%22plugins%22) and report your own suggestions!
+
 This repository contains various example plugins for Lemmy. See the following links for more information:
 
 - [Lemmy Plugin Documentation](https://join-lemmy.org/docs/contributors/08-plugins.html)
